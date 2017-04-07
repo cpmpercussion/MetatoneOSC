@@ -490,6 +490,17 @@
                                                                               forDevice:message.arguments[1]];
     } else if ([message.addressPattern isEqualToString:@"/metatone/classifier/hello"]) {
         NSLog(@"NETWORK MANAGER: Connection Handshake from Server Received.");
+    } else if ([message.addressPattern isEqualToString:@"/metatone/classifier/touch"]) {
+        // A returned touch message from the classifier -- play it!
+        //NSLog(@"Play back a touch of some kind");
+        if ([message.arguments count] == 4) [self.delegate didReceiveTouchPlayMessageFor:message.arguments[0] X:message.arguments[1] Y:message.arguments[2] vel:message.arguments[3]];
+        //[NSNumber numberWithFloat:point.x],
+        //[NSNumber numberWithFloat:point.y],
+        //[NSNumber numberWithFloat:vel]];
+        // Message should have three arguments.
+    } else if ([message.addressPattern isEqualToString:@"/metatone/classifier/playgesture"]) {
+        // Gesture Message to be played back!
+        if ([message.arguments count] == 2) [self.delegate didReceiveGesturePlayMessageFor:message.arguments[0] withClass:message.arguments[1]];
     } else {
         // Received unknown message:
         NSLog(@"NETWORK MANAGER: Received unknown message: %@", [message description]);

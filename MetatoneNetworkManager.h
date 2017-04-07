@@ -28,6 +28,8 @@
 -(void)didReceivePerformanceEndEvent:(NSString *)event forDevice:(NSString *)device;
 -(void) metatoneClientFoundWithAddress: (NSString *) address andPort: (int) port andHostname:(NSString *) hostname;
 -(void) metatoneClientRemovedwithAddress: (NSString *) address andPort: (int) port andHostname:(NSString *) hostname;
+-(void) didReceiveGesturePlayMessageFor:(NSString*)device withClass:(NSString*)cla;
+-(void) didReceiveTouchPlayMessageFor:(NSString*)device X:(NSNumber*)x Y:(NSNumber*)y vel:(NSNumber*)vel;
 @end
 
 @interface MetatoneNetworkManager : NSObject <F53OSCPacketDestination,F53OSCClientDelegate, SRWebSocketDelegate, NSNetServiceDelegate, NSNetServiceBrowserDelegate>
