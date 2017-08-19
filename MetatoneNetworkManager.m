@@ -86,7 +86,7 @@
                                name:[[NSHost currentHost] localizedName]
                                port:DEFAULT_PORT];
 #endif
-        if (self.metatoneNetService != nil) {
+    if (self.metatoneNetService != nil) {
         [self.metatoneNetService setDelegate: self];
         [self.metatoneNetService publishWithOptions:0];
         // if ios: [UIDevice currentDevice].name if mac: [[NSHost currentHost] localizedName]
@@ -380,7 +380,7 @@
     F53OSCMessage *message = [F53OSCMessage messageWithAddressPattern:@"/metatone/touch"
                                                             arguments:contents];
     [self.oscClient sendPacket:message toHost:self.loggingIPAddress onPort:self.loggingPort];
-    [self sendToWebClassifier:message]; // hope this works!
+    [self sendToWebClassifier:message];
 }
 
 -(void)sendMesssageSwitch:(NSString *)name On:(BOOL)on
@@ -391,7 +391,7 @@
                           switchState];
     F53OSCMessage *message = [F53OSCMessage messageWithAddressPattern:@"/metatone/switch" arguments:contents];
     [self.oscClient sendPacket:message toHost:self.loggingIPAddress onPort:self.loggingPort];
-    [self sendToWebClassifier:message]; // hope this works!
+    [self sendToWebClassifier:message];
 }
 
 -(void)sendMessageTouchEnded
@@ -399,7 +399,7 @@
     NSArray *contents = @[self.deviceID];
     F53OSCMessage *message = [F53OSCMessage messageWithAddressPattern:@"/metatone/touch/ended" arguments:contents];
     [self.oscClient sendPacket:message toHost:self.loggingIPAddress onPort:self.loggingPort];
-    [self sendToWebClassifier:message]; // hope this works!
+    [self sendToWebClassifier:message];
 }
 
 -(void)sendMessageOnline
@@ -407,6 +407,15 @@
     NSLog(@"Constructing Online Message.");
     NSArray *contents = @[self.deviceID,self.appID];
     F53OSCMessage *message = [F53OSCMessage messageWithAddressPattern:@"/metatone/online" arguments:contents];
+    [self.oscClient sendPacket:message toHost:self.loggingIPAddress onPort:self.loggingPort];
+    [self sendToWebClassifier:message];
+}
+
+-(void)sendMessageRemoteControl
+{
+    NSLog(@"Sending Remote Control Message.");
+    NSArray *contents = @[self.deviceID, [self localIPAddress]];
+    F53OSCMessage *message = [F53OSCMessage messageWithAddressPattern:@"/metatone/remote" arguments:contents];
     [self.oscClient sendPacket:message toHost:self.loggingIPAddress onPort:self.loggingPort];
     [self sendToWebClassifier:message];
 }
@@ -451,10 +460,9 @@
 }
 
 #pragma mark OSC Receiving Methods
+
+/// Main method for receiving and parsing OSC Messages.
 -(void)takeMessage:(F53OSCMessage *)message {
-    // Received an OSC message
-//    NSLog(@"NETWORK: Message parsed, now filtering by addressPattern");
-//    NSLog(@"NETWORK: %@", [message description]);
     if ([message.addressPattern isEqualToString:@"/metatone/app"]) {
         // InterAppmessage
         if ([message.arguments count] == 3) {
@@ -521,7 +529,8 @@
 // for the experiment, the int can be random (as long as everybody has the same one).
 
 #pragma mark IP Address Methods
-// Get IP Address
+
+/// Get IP Address
 + (NSString *)getIPAddress {
     NSString *address = @"error";
     struct ifaddrs *interfaces = NULL;
@@ -548,6 +557,7 @@
     return address;
 }
 
+/// Attempt to find local broadcast address.
 + (NSString *)getLocalBroadcastAddress {
     NSArray *addressComponents = [[MetatoneNetworkManager getIPAddress] componentsSeparatedByString:@"."];
     NSString *address = nil;

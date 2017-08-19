@@ -37,19 +37,16 @@
 @property (strong,nonatomic) F53OSCClient *oscClient;
 @property (strong,nonatomic) F53OSCServer *oscServer;
 @property (strong,nonatomic) SRWebSocket *classifierWebSocket;
-
-
-//@property (strong, nonatomic) OSCConnection *connection;
 @property (strong, nonatomic) NSString *loggingIPAddress;
 @property (nonatomic) NSInteger loggingPort;
 @property (strong, nonatomic) NSString *loggingHostname;
 @property (strong, nonatomic) NSString *deviceID;
 @property (strong,nonatomic) NSString *appID;
 @property (strong, nonatomic) NSString *localIPAddress;
-
+/// Hostname for the web classifier server.
 @property (strong, nonatomic) NSString *webClassifierHostname;
+/// Port for the web classifier server.
 @property (nonatomic) int webClassifierPort;
-
 @property (strong, nonatomic) NSNetServiceBrowser *oscLoggerServiceBrowser;
 @property (strong, nonatomic) NSNetServiceBrowser *metatoneServiceBrowser;
 @property (strong, nonatomic) NSNetServiceBrowser *metatoneWebClassifierBrowser;
@@ -62,10 +59,11 @@
 @property (nonatomic) bool connectToWebClassifier;
 @property (nonatomic) bool connectToLocalClassifier;
 @property (nonatomic) bool connectToLocalWebSocket;
-
-
+/// Records if connected to a local performance server
 @property (nonatomic) bool connectedToLocalPerformanceServer;
+/// Records if connected to a remote server.
 @property (nonatomic) int connectedToServer;
+/// Delegate for triggering events and receiving data.
 @property (weak,nonatomic) id<MetatoneNetworkManagerDelegate> delegate;
 
 
@@ -84,6 +82,8 @@
 - (void)sendMesssageSwitch:(NSString *)name On:(BOOL)on;
 - (void)sendMetatoneMessage:(NSString *)name withState:(NSString *)state;
 - (void)sendMetatoneMessageViaServer:(NSString *)name withState:(NSString *)state;
+/// Sends a message alerting the server that the current app can be remote controller "/metatone/remote"
+- (void)sendMessageRemoteControl;
 - (void)closeClassifierWebSocket;
 
 
