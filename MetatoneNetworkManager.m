@@ -145,7 +145,7 @@
     if (self.connectedToServer == SERVER_DISCONNECTED)
     {
         NSLog(@"NETWORK MANAGER: startConnectingToWebClassifier was called.");
-        NSLog(@"NETWORK MANAGER: WebSocket.readyState is %d",self.classifierWebSocket.readyState);
+        NSLog(@"NETWORK MANAGER: WebSocket.readyState is %ld",(long)self.classifierWebSocket.readyState);
         if (self.classifierWebSocket.readyState == SR_CLOSED || self.classifierWebSocket.readyState == SR_CONNECTING)
         {
             NSLog(@"NETWORK MANAGER: Classifier is closed, now starting to connect to WebClassifier");
